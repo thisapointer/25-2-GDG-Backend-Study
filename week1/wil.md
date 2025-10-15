@@ -165,7 +165,7 @@ Java의 가장 큰 특징인 **객체 지향**을 잘 살려냄
   HTTP Method: GET  
   URI: /products  
   + 개별 상품 정보 상세 조회  
-  HTTP Method: POST  
+  HTTP Method: GET  
   URI: /products/{productId}  
   + 상품 정보 수정  
   HTTP Method: PATCH  
@@ -181,7 +181,7 @@ Java의 가장 큰 특징인 **객체 지향**을 잘 살려냄
   HTTP Method: GET  
   URI: /orders  
   + 개별 주문 정보 상세 조회  
-  HTTP Method: POST  
+  HTTP Method: GET  
   URI: /orders/{orderId}   
   + 주문 취소  
   HTTP Method: DELETE  
