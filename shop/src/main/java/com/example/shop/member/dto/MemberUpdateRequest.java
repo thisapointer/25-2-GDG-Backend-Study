@@ -1,6 +1,5 @@
 package com.example.shop.member.dto;
 
-
 import lombok.Getter;
 
 // password, phoneNumber, address

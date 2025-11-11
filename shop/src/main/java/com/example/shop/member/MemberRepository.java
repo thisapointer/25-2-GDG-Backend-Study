@@ -17,13 +17,13 @@ public class MemberRepository {
     }
 
     public List<Member> findAll() {
-        return em.createQuery("SELECT * FROM Member m", Member.class)
+        return em.createQuery("SELECT m FROM Member m", Member.class)
                 .getResultList();
     }
 
     public Member findByLoginId(String loginId) {
         List<Member> result = em.createQuery(
-                "SELECT * FROM Member m WHERE m.loginId = :loginId", Member.class
+                "SELECT m FROM Member m WHERE m.loginId = :loginId", Member.class
         ).setParameter("loginId", loginId).getResultList();
 
         return result.isEmpty() ? null : result.get(0);

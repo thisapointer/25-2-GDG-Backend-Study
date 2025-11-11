@@ -1,21 +1,27 @@
 package com.example.shop.product;
 
+import com.example.shop.product.dto.ProductCreateRequest;
+import com.example.shop.product.dto.ProductUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+
     private final ProductRepository productRepository;
 
+    @Transactional
     public Long createProduct(ProductCreateRequest request) {
-        Product existingProduct = productRepository.findById(request.getId());
+        Product existingProduct = productRepository.findByName(request.getName());
         if (existingProduct != null) {
-            throw new RuntimeException("이미 존재하는 제품 아이디입니다: " + request.getId());
+            throw new RuntimeException("이미 존재하는 제품 이름입니다: " + request.getName());
         }
 
         Product product = new Product(
-                request.getId(),
                 request.getName(),
                 request.getPrice()
         );
@@ -25,10 +31,12 @@ public class ProductService {
         return product.getId();
     }
 
+    @Transactional(readOnly = true)
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Product getProductById(Long id) {
         Product product = productRepository.findById(id);
 
@@ -39,6 +47,7 @@ public class ProductService {
         return product;
     }
 
+    @Transactional
     public void updateProduct(Long id, ProductUpdateRequest request) {
         Product product = productRepository.findById(id);
 
@@ -49,6 +58,7 @@ public class ProductService {
         product.updateInfo(request.getName(), request.getPrice());
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id);
 

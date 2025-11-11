@@ -1,16 +1,19 @@
 package com.example.shop.order;
 
+import com.example.shop.order.dto.OrderCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/orders")
 public class OrderController {
-    private OrderService orderService;
+
+    final private OrderService orderService;
 
     @PostMapping
     public ResponseEntity<Void> createOrder(@RequestBody OrderCreateRequest request) {
