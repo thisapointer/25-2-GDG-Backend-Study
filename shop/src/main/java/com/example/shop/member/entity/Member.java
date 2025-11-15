@@ -1,4 +1,4 @@
-package com.example.shop.member;
+package com.example.shop.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -52,5 +52,9 @@ public class Member {
         if (address != null) {
             this.address = address;
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

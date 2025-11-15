@@ -1,6 +1,6 @@
-package com.example.shop.order;
+package com.example.shop.order.entity;
 
-import com.example.shop.member.Member;
+import com.example.shop.member.entity.Member;
 import com.example.shop.orderProduct.OrderProduct;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
