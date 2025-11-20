@@ -61,7 +61,7 @@
 > `@Controller`  
 \- 컨트롤러 명시  
 `@ResponseBody`  
-\- 클래스 안의 메소드들의 반환값들을 HTTP 응답 본문에 직접 작성
+\- 클래스 안의 메소드들의 반환값들을 HTTP 응답 본문에 직접 작성  
 `@RequestBody`  
 \- JSON인 HTTP body을 객체로 변환  
 `@RestController`  

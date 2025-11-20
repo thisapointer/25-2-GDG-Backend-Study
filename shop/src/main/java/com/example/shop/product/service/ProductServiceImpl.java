@@ -1,5 +1,8 @@
 package com.example.shop.product.service;
 
+import com.example.shop.common.exception.BadRequestException;
+import com.example.shop.common.exception.NotFoundException;
+import com.example.shop.common.message.ErrorMessage;
 import com.example.shop.product.dto.ProductCreateRequest;
 import com.example.shop.product.dto.ProductUpdateRequest;
 import com.example.shop.product.entity.Product;
@@ -21,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     public Long createProduct(ProductCreateRequest request) {
         Product existingProduct = productRepository.findByName(request.getName());
         if (existingProduct != null) {
-            throw new RuntimeException("이미 존재하는 제품 이름입니다: " + request.getName());
+            throw new BadRequestException(ErrorMessage.PRODUCT_ALREADY_EXISTS);
         }
 
         Product product = new Product(
@@ -46,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id);
 
         if (product == null) {
-            throw new RuntimeException("제품을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
 
         return product;
@@ -58,10 +61,17 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id);
 
         if (product == null) {
-            throw new RuntimeException("제품을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
 
-        product.updateInfo(request.getName(), request.getPrice());
+        String name = (request.getName() != null)
+                ? request.getName()
+                : product.getName();
+        int price = (request.getPrice() != null)
+                ? request.getPrice()
+                : product.getPrice();
+
+        product.updateInfo(name, price);
     }
 
     @Override
@@ -70,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id);
 
         if (product == null) {
-            throw new RuntimeException("제품을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
 
         productRepository.deleteById(id);

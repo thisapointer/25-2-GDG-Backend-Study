@@ -1,5 +1,7 @@
 package com.example.shop.order.service;
 
+import com.example.shop.common.exception.NotFoundException;
+import com.example.shop.common.message.ErrorMessage;
 import com.example.shop.order.dto.OrderCreateRequest;
 import com.example.shop.order.entity.Order;
 import com.example.shop.order.repository.OrderRepository;
@@ -19,9 +21,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Long createOrder(OrderCreateRequest request) {
 
-        Order order = new Order(
-                request.getTime()
-        );
+        Order order = new Order(request.getTime());
 
         orderRepository.save(order);
 
@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id);
 
         if (order == null) {
-            throw new RuntimeException("주문을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.ORDER_NOT_FOUND);
         }
 
         return order;
@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id);
 
         if (order == null) {
-            throw new RuntimeException("주문을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.ORDER_NOT_FOUND);
         }
 
         orderRepository.deleteById(id);

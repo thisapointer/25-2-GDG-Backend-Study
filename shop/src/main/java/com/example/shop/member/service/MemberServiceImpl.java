@@ -1,5 +1,8 @@
 package com.example.shop.member.service;
 
+import com.example.shop.common.exception.BadRequestException;
+import com.example.shop.common.exception.NotFoundException;
+import com.example.shop.common.message.ErrorMessage;
 import com.example.shop.member.entity.Member;
 import com.example.shop.member.dto.MemberCreateRequest;
 import com.example.shop.member.dto.MemberUpdateRequest;
@@ -21,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
     public Long createMember(MemberCreateRequest request) {
         Member existingMember = memberRepository.findByLoginId(request.getLoginId());
         if (existingMember != null) {
-            throw new RuntimeException("이미 존재하는 로그인 아이디입니다: " + request.getLoginId());
+            throw new BadRequestException(ErrorMessage.MEMBET_ALREADY_EXISTS);
         }
 
         Member member = new Member(
@@ -48,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(id);
 
         if (member == null) {
-            throw new RuntimeException("회원을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND);
         }
 
         return member;
@@ -60,11 +63,21 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(id);
 
         if (member == null) {
-            throw new RuntimeException("회원을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND);
         }
 
+        String password = (request.getPassword() != null)
+                ? request.getPassword()
+                : member.getPassword();
+        String phoneNumber = (request.getPhoneNumber() != null)
+                ? request.getPhoneNumber()
+                : member.getPhoneNumber();
+        String address = (request.getAddress() != null)
+                ? request.getAddress()
+                : member.getAddress();
+
         // 회원 정보 수정 (도메인 객체의 메서드 사용)
-        member.updateInfo(request.getPassword(), request.getPhoneNumber(), request.getAddress());
+        member.updateInfo(password, phoneNumber, address);
     }
 
     @Override
@@ -73,7 +86,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(id);
 
         if (member == null) {
-            throw new RuntimeException("회원을 찾을 수 없습니다.");
+            throw new NotFoundException(ErrorMessage.MEMBER_NOT_FOUND);
         }
 
         // Repository를 통해 삭제

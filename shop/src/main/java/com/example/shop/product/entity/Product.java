@@ -47,13 +47,7 @@ public class Product {
     }
 
     public void updateInfo(String name, Integer price) {
-
-        if (name != null) {
-            this.name = name;
-        }
-
-        if (price != null) {
-            this.price = price;
-        }
+        this.name = name;
+        this.price = price;
     }
 }
